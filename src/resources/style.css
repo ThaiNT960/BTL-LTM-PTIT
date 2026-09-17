@@ -1,0 +1,24 @@
+/* Compact style follows the reference, with a blue/orange palette. */
+.root { -fx-font-family: "Arial"; -fx-background-color: linear-gradient(to bottom, #4c91b8, #285777); }
+.button { -fx-background-color: #ffcf8a; -fx-text-fill: black; -fx-font-size: 16px; -fx-font-weight: bold; }
+.label { -fx-text-fill: white; -fx-font-weight: bold; }
+.heading { -fx-font-size: 24px; }
+.table-view { -fx-background-color: #c5e9f5; }
+.text-field, .password-field { -fx-background-color: #f0faff; }
+.tab-pane .tab-header-area { -fx-background-color: #438bb2; }
+.tab-pane .tab-header-area .tab { -fx-text-fill: white; }
+.menu-bar { -fx-background-color: #438bb2; }
+.menu-bar .menu > .label { -fx-text-fill: white; }
+.menu-bar .menu:hover, .menu-bar .menu:showing { -fx-background-color: #285777; }
+.context-menu { -fx-background-color: #f0faff; }
+.context-menu .menu-item > .label { -fx-text-fill: #183749; }
+.context-menu .menu-item:focused { -fx-background-color: #285777; }
+.context-menu .menu-item:focused > .label { -fx-text-fill: white; }
+.dialog-pane .label { -fx-text-fill: #183749; }
+.table-view .column-header .label { -fx-text-fill: #183749; }
+.table-view .placeholder .label { -fx-text-fill: #183749; }
+.combo-box .list-cell { -fx-text-fill: #183749; }
+.gamebar { -fx-background-color: lightgray; }
+.gamebar .label { -fx-text-fill: black; -fx-font-size: 18px; }
+.gamebar .timer { -fx-text-fill: #c3392b; -fx-font-size: 16px; }
+.subtle { -fx-font-size: 12px; }

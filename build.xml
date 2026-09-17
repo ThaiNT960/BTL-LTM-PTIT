@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="NumberGuessingClient" default="run" basedir=".">
+  <property file="nbproject/project.properties"/>
+  <target name="init">
+    <available file="${jdk.home}/bin/javac.exe" property="jdk.present"/>
+    <available file="${javafx.home}/lib/javafx.controls.jar" property="fx.present"/>
+    <fail unless="jdk.present">Set jdk.home in nbproject/project.properties to your JDK 24+ folder.</fail>
+    <fail unless="fx.present">Set javafx.home in nbproject/project.properties to your JavaFX SDK 25 folder.</fail>
+    <mkdir dir="${build.classes.dir}"/>
+  </target>
+  <target name="compile" depends="init">
+    <javac srcdir="${src.dir}" destdir="${build.classes.dir}" encoding="UTF-8" includeantruntime="false" fork="true" executable="${jdk.home}/bin/javac.exe">
+      <compilerarg value="--release"/><compilerarg value="21"/>
+      <compilerarg value="--module-path"/><compilerarg path="${javafx.home}/lib"/>
+      <compilerarg value="--add-modules"/><compilerarg value="javafx.controls,javafx.fxml,javafx.media"/>
+    </javac>
+    <copy todir="${build.classes.dir}"><fileset dir="${src.dir}" excludes="**/*.java"/></copy>
+  </target>
+  <target name="run" depends="compile">
+    <java classname="${main.class}" fork="true" failonerror="true" jvm="${jdk.home}/bin/java.exe">
+      <classpath><pathelement path="${build.classes.dir}"/><fileset dir="lib" includes="*.jar"/></classpath>
+      <sysproperty key="server.host" value="${server.host}"/>
+      <sysproperty key="server.port" value="${server.port}"/>
+      <jvmarg value="--module-path"/><jvmarg path="${javafx.home}/lib"/>
+      <jvmarg value="--add-modules"/><jvmarg value="javafx.controls,javafx.fxml,javafx.media"/>
+      <jvmarg value="--enable-native-access=javafx.graphics,javafx.media"/>
+    </java>
+  </target>
+  <target name="compile-single" depends="compile"/>
+  <target name="run-single" depends="compile">
+    <property name="run.class" value="${main.class}"/>
+    <java classname="${run.class}" fork="true" failonerror="true" jvm="${jdk.home}/bin/java.exe">
+      <classpath><pathelement path="${build.classes.dir}"/><fileset dir="lib" includes="*.jar"/></classpath>
+      <sysproperty key="server.host" value="${server.host}"/>
+      <sysproperty key="server.port" value="${server.port}"/>
+      <jvmarg value="--module-path"/><jvmarg path="${javafx.home}/lib"/>
+      <jvmarg value="--add-modules"/><jvmarg value="javafx.controls,javafx.fxml,javafx.media"/>
+      <jvmarg value="--enable-native-access=javafx.graphics,javafx.media"/>
+    </java>
+  </target>
+  <target name="jar" depends="compile">
+    <mkdir dir="${dist.dir}"/>
+    <jar destfile="${dist.jar}" basedir="${build.classes.dir}"><manifest><attribute name="Main-Class" value="${main.class}"/></manifest></jar>
+  </target>
+  <target name="clean"><delete dir="${build.dir}"/><delete dir="${dist.dir}"/></target>
+  <target name="rebuild" depends="clean,jar"/>
+</project>
