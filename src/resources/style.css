@@ -1,24 +1,226 @@
-/* Compact style follows the reference, with a blue/orange palette. */
+/* Định dạng cơ sở cho đăng nhập, sảnh và hộp thoại. */
 .root { -fx-font-family: "Arial"; -fx-background-color: linear-gradient(to bottom, #4c91b8, #285777); }
-.button { -fx-background-color: #ffcf8a; -fx-text-fill: black; -fx-font-size: 16px; -fx-font-weight: bold; }
 .label { -fx-text-fill: white; -fx-font-weight: bold; }
 .heading { -fx-font-size: 24px; }
+.subtle { -fx-font-size: 12px; }
+.button { -fx-background-color: #ffcf8a; -fx-text-fill: black; -fx-font-size: 16px; -fx-font-weight: bold; }
 .table-view { -fx-background-color: #c5e9f5; }
-.text-field, .password-field { -fx-background-color: #f0faff; }
-.tab-pane .tab-header-area { -fx-background-color: #438bb2; }
-.tab-pane .tab-header-area .tab { -fx-text-fill: white; }
-.menu-bar { -fx-background-color: #438bb2; }
+.text-field, .password-field { -fx-background-color: #f0faff; -fx-text-fill: #183749; -fx-prompt-text-fill: #8b9ca5; }
+.tab-pane .tab-header-area, .menu-bar { -fx-background-color: #438bb2; }
 .menu-bar .menu > .label { -fx-text-fill: white; }
 .menu-bar .menu:hover, .menu-bar .menu:showing { -fx-background-color: #285777; }
 .context-menu { -fx-background-color: #f0faff; }
 .context-menu .menu-item > .label { -fx-text-fill: #183749; }
 .context-menu .menu-item:focused { -fx-background-color: #285777; }
 .context-menu .menu-item:focused > .label { -fx-text-fill: white; }
-.dialog-pane .label { -fx-text-fill: #183749; }
-.table-view .column-header .label { -fx-text-fill: #183749; }
-.table-view .placeholder .label { -fx-text-fill: #183749; }
+.dialog-pane { -fx-background-color: linear-gradient(to bottom, #4c91b8, #285777); }
+.dialog-pane .label { -fx-text-fill: #102e40; }
+.table-view .column-header .label, .table-view .placeholder .label { -fx-text-fill: #183749; }
 .combo-box .list-cell { -fx-text-fill: #183749; }
-.gamebar { -fx-background-color: lightgray; }
-.gamebar .label { -fx-text-fill: black; -fx-font-size: 18px; }
-.gamebar .timer { -fx-text-fill: #c3392b; -fx-font-size: 16px; }
-.subtle { -fx-font-size: 12px; }
+.check-box { -fx-text-fill: white; -fx-font-size: 12px; }
+.slider .track { -fx-background-color: #9eb9c8; }
+.slider .thumb { -fx-background-color: #ffcf8a; }
+/* Màn đấu rừng pha lê: chữ và điều khiển đặt trên các ảnh PNG. */
+.battle-screen { -fx-background-color:#163e34; -fx-font-family:"Arial"; }
+.battle-screen .label { -fx-text-fill:#51331e; }
+.battle-screen .battle-card-title {
+    -fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#fff0bd;
+    -fx-effect:dropshadow(gaussian,#59320f,3,.8,0,2);
+}
+.battle-screen .battle-card-name { -fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#52321a; }
+.battle-screen .battle-clock {
+    -fx-font-size:44px; -fx-font-weight:bold; -fx-text-fill:#fff8d7;
+    -fx-effect:dropshadow(gaussian,#14463c,5,.8,0,2);
+}
+.battle-screen .battle-clock:warning { -fx-text-fill:#ffe16c; }
+.battle-screen .battle-turn {
+    -fx-font-size:18px; -fx-font-weight:bold; -fx-text-fill:#fff2c8;
+    -fx-effect:dropshadow(gaussian,#533117,4,.9,0,2);
+}
+.battle-screen .battle-panel-title {
+    -fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:#fff1bd;
+    -fx-effect:dropshadow(gaussian,#573118,4,.85,0,2);
+}
+.battle-screen .battle-range {
+    -fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#fff2cc;
+    -fx-effect:dropshadow(gaussian,#4b2a12,4,.9,0,2);
+}
+.battle-screen .battle-hint {
+    -fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#fff3cc;
+    -fx-effect:dropshadow(gaussian,#214936,6,.9,0,2);
+}
+.battle-screen .battle-image-button {
+    -fx-background-color:transparent; -fx-border-color:transparent;
+    -fx-text-fill:#4d2914; -fx-font-size:21px; -fx-font-weight:bold;
+    -fx-effect:dropshadow(gaussian,#fff0a9,2,.7,0,1);
+    -fx-cursor:hand; -fx-padding:0;
+}
+.battle-screen .battle-image-button:hover { -fx-text-fill:#6b3516; -fx-scale-x:1.025; -fx-scale-y:1.025; }
+.battle-screen .battle-image-button:pressed { -fx-scale-x:.985; -fx-scale-y:.985; }
+.battle-screen .battle-image-button:disabled { -fx-opacity:.5; }
+.battle-screen .battle-history {
+    -fx-background-color:transparent; -fx-border-color:transparent;
+    -fx-fixed-cell-size:26;
+}
+.battle-screen .battle-history .column-header-background,
+.battle-screen .battle-history .column-header { -fx-background-color:#d9c2a1; }
+.battle-screen .battle-history .column-header .label { -fx-text-fill:#55371e; -fx-font-size:15px; }
+.battle-screen .battle-history .table-row-cell { -fx-background-color:rgba(255,247,229,.84); -fx-cell-size:26; }
+.battle-screen .battle-history .table-row-cell:odd { -fx-background-color:rgba(243,232,210,.84); }
+.battle-screen .battle-history .table-row-cell.latest-guess { -fx-background-color:#d4eadb; }
+.battle-screen .battle-history .table-row-cell:selected { -fx-background-color:#b4ddca; }
+.battle-screen .battle-history .table-cell { -fx-text-fill:#473824; -fx-font-size:15px; -fx-border-color:transparent; }
+.battle-screen .battle-chat-area {
+    -fx-background-color:transparent; -fx-control-inner-background:transparent;
+    -fx-text-fill:#513923; -fx-font-size:15px; -fx-border-color:transparent;
+}
+.battle-screen .battle-chat-area .scroll-pane,
+.battle-screen .battle-chat-area .scroll-pane .viewport,
+.battle-screen .battle-chat-area .scroll-pane .content {
+    -fx-background-color:transparent; -fx-background-insets:0;
+}
+.battle-screen .battle-message, .battle-screen .battle-guess {
+    -fx-background-color:transparent; -fx-text-fill:#4f3420;
+    -fx-prompt-text-fill:#a18a70; -fx-font-size:16px;
+    -fx-border-color:transparent; -fx-padding:5 12;
+}
+.battle-screen .battle-message { -fx-font-size:15px; }
+.battle-screen .battle-modal-title {
+    -fx-font-size:21px; -fx-font-weight:bold; -fx-text-fill:#fff2c4;
+    -fx-effect:dropshadow(gaussian,#67401f,4,.8,0,2);
+}
+.battle-screen .battle-modal-message { -fx-font-size:18px; -fx-text-fill:#53381f; }
+
+.battle-screen .battle-history .filler { -fx-background-color:transparent; }
+.battle-screen .battle-history .placeholder .label { -fx-text-fill:#775332; -fx-font-size:15px; }
+
+.battle-screen .battle-history .column-header { -fx-pref-height:28; }
+
+/* Định dạng đăng nhập và sảnh rừng pha lê. */
+.app-screen { -fx-background-color:#163e34; -fx-font-family:"Arial"; }
+.app-screen .screen-title { -fx-font-size:23px; -fx-font-weight:bold; -fx-text-fill:#fff3cf; -fx-effect:dropshadow(gaussian,#582c13,3,.8,0,2); }
+.app-screen .screen-label { -fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#59391e; }
+.app-screen .screen-input { -fx-background-color:transparent; -fx-border-color:transparent; -fx-padding:3 5; -fx-font-size:17px; -fx-text-fill:#51351e; -fx-prompt-text-fill:#9a815f; }
+.app-screen .screen-eye { -fx-background-color:transparent; -fx-padding:0; -fx-cursor:hand; }
+.app-screen .screen-eye .eye-outline { -fx-fill:transparent; -fx-stroke:#74502d; -fx-stroke-width:1.8; }
+.app-screen .screen-eye .eye-pupil { -fx-fill:#74502d; }
+.app-screen .screen-eye .eye-slash { -fx-stroke:#74502d; -fx-stroke-width:2; }
+.app-screen .screen-primary { -fx-background-color:transparent; -fx-border-color:transparent; -fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:#53300d; -fx-padding:0; -fx-cursor:hand; }
+.app-screen .screen-primary:hover { -fx-text-fill:#97500e; }
+.app-screen .screen-primary:focused { -fx-border-color:#88542c; -fx-border-radius:18; -fx-border-insets:5 15; }
+.app-screen .screen-error { -fx-text-fill:#9a3426; -fx-font-size:14px; }
+.app-screen .hyperlink { -fx-text-fill:#68411e; -fx-font-size:15px; -fx-underline:true; }
+.app-screen #auth-switch, .app-screen #auth-switch:focused {
+    -fx-background-color:transparent; -fx-border-color:transparent; -fx-border-width:0;
+    -fx-focus-color:transparent; -fx-faint-focus-color:transparent;
+}
+.app-screen .screen-caption { -fx-font-size:14px; -fx-text-fill:#fff6dc; -fx-effect:dropshadow(gaussian,#234d36,3,.9,0,1); }
+.app-screen .screen-welcome { -fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#fff6dc; -fx-effect:dropshadow(gaussian,#234d36,4,.9,0,1); }
+.app-screen .button { -fx-cursor:hand; }
+.app-screen .screen-lobby-panel { -fx-background-color:#fff1d7; -fx-background-radius:16; -fx-border-color:#ad7536; -fx-border-width:5; -fx-border-radius:13; -fx-padding:12; }
+.app-screen .screen-lobby-panel .screen-caption { -fx-text-fill:#74522d; -fx-effect:null; }
+.app-screen .tab-pane .tab-header-background { -fx-background-color:#e2c396; }
+.app-screen .tab { -fx-background-color:#ecd4ac; -fx-padding:8 14; }
+.app-screen .tab:selected { -fx-background-color:#fff1d7; }
+.app-screen .tab .tab-label { -fx-font-size:16px; -fx-text-fill:#56351c; }
+.app-screen .table-view { -fx-background-color:#fff7e7; -fx-border-color:#dfc69e; -fx-fixed-cell-size:36; }
+.app-screen .table-row-cell { -fx-background-color:#fff7e7; }
+.app-screen .table-row-cell:odd { -fx-background-color:#f4e6cd; }
+.app-screen .screen-content .table-row-cell:filled:hover { -fx-background-color:#cde4d9; }
+.app-screen .table-row-cell:selected { -fx-background-color:#cde4d9; }
+.app-screen .table-cell { -fx-font-size:15px; -fx-text-fill:#513820; -fx-border-color:transparent; }
+.app-screen .column-header { -fx-background-color:#e4c89e; }
+.app-screen #match-details-table .filler { -fx-background-color:#e4c89e; }
+.app-screen .screen-content #match-history-table .filler { -fx-background-color:#e4c89e; }
+.app-screen .column-header .label { -fx-text-fill:#513820; -fx-font-size:15px; }
+.app-screen .check-box { -fx-text-fill:#624423; -fx-font-size:14px; }
+.app-screen .button { -fx-font-size:14px; -fx-padding:7 10; }
+.app-screen .screen-lobby-panel .text-field { -fx-font-size:14px; -fx-background-color:#fffaf0; -fx-text-fill:#513820; }
+
+/* Nút ảnh đã có sẵn chữ và biểu tượng. */
+.app-screen .image-button {
+    -fx-background-color:transparent; -fx-border-color:transparent; -fx-padding:0;
+    -fx-background-insets:0; -fx-graphic-text-gap:0; -fx-effect:null;
+}
+.app-screen .image-button:hover { -fx-effect:dropshadow(gaussian,#ffe39a,8,.25,0,0); }
+.app-screen .image-button:pressed { -fx-opacity:.8; }
+.app-screen .image-button:focused, .app-screen .image-button:selected {
+    -fx-effect:dropshadow(gaussian,#fff5b0,7,.6,0,0);
+}
+.app-screen .screen-body { -fx-font-size:16px; -fx-text-fill:#634122; -fx-font-weight:normal; }
+.app-screen .screen-content { -fx-background-color:transparent; }
+.app-screen .screen-content .table-view { -fx-background-color:transparent; -fx-border-color:transparent; -fx-fixed-cell-size:32; }
+.app-screen .screen-content .table-row-cell:empty { -fx-background-color:transparent; }
+.app-screen .screen-content .table-row-cell:empty .table-cell { -fx-border-color:transparent; }
+.app-screen .screen-content .table-view .filler { -fx-background-color:transparent; }
+.app-screen .screen-content .text-field { -fx-font-size:15px; -fx-background-color:#fff9e9; -fx-text-fill:#513820; -fx-prompt-text-fill:#91744d; -fx-background-radius:8; -fx-border-color:#c5a16b; -fx-border-radius:8; }
+.app-screen .combo-box { -fx-background-color:#fff6df; -fx-border-color:#c29c60; -fx-border-radius:6; -fx-background-radius:6; -fx-font-size:16px; }
+.app-screen .combo-box .list-cell { -fx-text-fill:#513820; -fx-font-size:16px; }
+
+/* Màu chữ chung cho giao diện rừng và sàn đấu. */
+.game-theme .screen-title, .game-theme .battle-panel-title,
+.game-theme .battle-card-title, .game-theme .battle-turn,
+.game-theme .battle-modal-title { -fx-text-fill:#ffe08a; -fx-effect:dropshadow(gaussian,#4d210f,3,.85,0,1); }
+.game-theme .battle-clock { -fx-text-fill:#ffedac; -fx-effect:dropshadow(gaussian,#3d200d,3,.8,0,1); }
+
+/* Căn tiêu đề cột và ô dữ liệu theo cùng lề và trục. */
+.table-view .text-column .label { -fx-alignment:center-left; -fx-padding:0 10; }
+.table-view .value-column .label { -fx-alignment:center; -fx-padding:0 10; }
+.table-view .table-cell { -fx-padding:0 10; }
+.app-screen .profile-hit { -fx-background-color:transparent; -fx-border-color:transparent; -fx-padding:0; }
+.app-screen .profile-hit:hover, .app-screen .profile-hit:focused { -fx-border-color:transparent; -fx-background-color:transparent; -fx-effect:null; }
+.game-theme .battle-turn { -fx-font-size:17px; }
+.game-theme .battle-clock { -fx-font-size:39px; }
+.game-theme .battle-range { -fx-font-size:14px; }
+.game-theme .battle-card-name { -fx-font-size:16px; }
+.game-theme .battle-guess { -fx-font-size:16px; }
+.game-theme .battle-message { -fx-font-size:14px; }
+.battle-screen .image-button { -fx-background-color:transparent; -fx-border-color:transparent; -fx-padding:0; -fx-cursor:hand; }
+.battle-screen .image-button:hover { -fx-effect:dropshadow(gaussian,#ffe39a,8,.25,0,0); }
+.battle-screen .image-button:pressed { -fx-opacity:.8; }
+/* Nút âm thanh chỉ sáng khi rê chuột, kể cả khi vẫn đang nhận tiêu điểm bàn phím. */
+.app-screen #sound-toggle, .battle-screen #sound-toggle {
+    -fx-effect:null;
+    -fx-focus-color:transparent;
+    -fx-faint-focus-color:transparent;
+}
+.app-screen #sound-toggle:hover, .battle-screen #sound-toggle:hover {
+    -fx-effect:dropshadow(gaussian,#ffe39a,8,.25,0,0);
+}
+/* Thanh cuộn màu kem cho bảng và khung chat. */
+.game-theme .scroll-bar {
+    -fx-background-color:#f5e9d0;
+    -fx-background-radius:7;
+    -fx-padding:2;
+    -fx-font-size:13px;
+}
+.game-theme .scroll-bar .track {
+    -fx-background-color:#fff5df;
+    -fx-background-radius:5;
+    -fx-border-color:#e4d4b4;
+    -fx-border-radius:5;
+}
+.game-theme .scroll-bar .thumb {
+    -fx-background-color:linear-gradient(to right,#f0dfbc,#e5d0a7);
+    -fx-background-insets:1;
+    -fx-background-radius:5;
+    -fx-border-color:#d3bf98;
+    -fx-border-insets:1;
+    -fx-border-radius:5;
+}
+.game-theme .scroll-bar .thumb:hover { -fx-background-color:#ead6ad; }
+.game-theme .scroll-bar .thumb:pressed { -fx-background-color:#dcc59a; }
+.game-theme .scroll-bar .increment-button,
+.game-theme .scroll-bar .decrement-button {
+    -fx-background-color:transparent;
+    -fx-padding:4;
+    -fx-background-radius:4;
+}
+.game-theme .scroll-bar .increment-button:hover,
+.game-theme .scroll-bar .decrement-button:hover { -fx-background-color:#ecddbf; }
+.game-theme .scroll-bar .increment-arrow,
+.game-theme .scroll-bar .decrement-arrow { -fx-background-color:#b4a17c; }
+.game-theme .scroll-pane > .corner,
+.game-theme .table-view > .virtual-flow > .corner { -fx-background-color:#f5e9d0; }
+.game-theme .battle-guess:disabled, .game-theme .battle-image-button:disabled { -fx-opacity:1; }
+.game-theme .battle-result-message { -fx-font-size:19px; -fx-font-weight:bold; -fx-text-fill:#fff3cf; -fx-effect:dropshadow(gaussian,#15231b,4,.8,0,1); }

@@ -1,17 +1,5 @@
-# Build artifacts
-/build/
-/dist/
-
-# Runtime output
-/logs/
-*.log
-*.lck
-
-# NetBeans user-specific files
-/nbproject/private/
-
-# Operating system / IDE noise
-.DS_Store
-Thumbs.db
-*.class
-*.tmp
+build/
+dist/
+nbproject/private/
+logs/
+.review/
