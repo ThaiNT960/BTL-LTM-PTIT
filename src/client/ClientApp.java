@@ -51,8 +51,7 @@ public class ClientApp extends Application {
     private final ObservableList<MatchHistoryRow> matchData = FXCollections.observableArrayList();
     private Label statTotal, statRate;
 
-    private final javafx.beans.property.BooleanProperty muted =
-            new javafx.beans.property.SimpleBooleanProperty(false);
+    private final javafx.beans.property.BooleanProperty muted = new javafx.beans.property.SimpleBooleanProperty(false);
     private StackPane screens;
     private ScreenLayout modal;
     private javafx.scene.Node modalFocus;
@@ -61,8 +60,7 @@ public class ClientApp extends Application {
 
     public record RankingRow(String name, String wins, String winRate) {}
 
-    public record MatchHistoryRow(
-            String matchId, String date, String opponent, String range, String result) {}
+    public record MatchHistoryRow(String matchId, String date, String opponent, String range, String result) {}
 
     public record GuessRow(String turn, String player, String number, String hint) {}
 
@@ -70,12 +68,11 @@ public class ClientApp extends Application {
     @Override
     public void start(Stage stage) {
         window = stage;
-        window.setOnCloseRequest(
-                event -> {
-                    stopTimer();
-                    if (network != null) network.close();
-                    audio.close();
-                });
+        window.setOnCloseRequest(event -> {
+            stopTimer();
+            if (network != null) network.close();
+            audio.close();
+        });
         login();
     }
 
@@ -88,10 +85,8 @@ public class ClientApp extends Application {
         Scene scene = new Scene(screens, width, height);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
         window.setTitle("Đấu Số - " + title);
-        window.setMinWidth(
-                (root instanceof BattleScreen || root instanceof ScreenLayout) ? 976 : 400);
-        window.setMinHeight(
-                (root instanceof BattleScreen || root instanceof ScreenLayout) ? 580 : 300);
+        window.setMinWidth((root instanceof BattleScreen || root instanceof ScreenLayout) ? 976 : 400);
+        window.setMinHeight((root instanceof BattleScreen || root instanceof ScreenLayout) ? 580 : 300);
         window.setScene(scene);
         window.sizeToScene();
         window.show();
@@ -110,11 +105,10 @@ public class ClientApp extends Application {
 
     Button button(String text, Runnable action, boolean playClick) {
         Button b = new Button(text);
-        b.setOnAction(
-                e -> {
-                    if (playClick) audio.play("click");
-                    action.run();
-                });
+        b.setOnAction(e -> {
+            if (playClick) audio.play("click");
+            action.run();
+        });
         return b;
     }
 
@@ -128,34 +122,20 @@ public class ClientApp extends Application {
         Button sound = new Button();
         sound.setId("sound-toggle");
         sound.getStyleClass().add("image-button");
-        sound.graphicProperty()
-                .bind(
-                        javafx.beans.binding.Bindings.createObjectBinding(
-                                () -> {
-                                    String file =
-                                            muted.get() ? "sound-icon-off.png" : "sound-icon-on.png";
-                                    var icon = ScreenLayout.icon(file, 48);
-                                    icon.setFitHeight(48);
-                                    return icon;
-                                },
-                                muted));
-        sound.accessibleTextProperty()
-                .bind(
-                        javafx.beans.binding.Bindings.when(muted)
-                                .then("Âm thanh: tắt")
-                                .otherwise("Âm thanh: bật"));
+        sound.graphicProperty().bind(javafx.beans.binding.Bindings.createObjectBinding(() -> {
+            String file = muted.get() ? "sound-icon-off.png" : "sound-icon-on.png";
+            var icon = ScreenLayout.icon(file, 48);
+            icon.setFitHeight(48);
+            return icon;
+        }, muted));
+        sound.accessibleTextProperty().bind(javafx.beans.binding.Bindings.when(muted).then("Âm thanh: tắt").otherwise("Âm thanh: bật"));
         Tooltip tip = new Tooltip();
-        tip.textProperty()
-                .bind(
-                        javafx.beans.binding.Bindings.when(muted)
-                                .then("Bật âm thanh")
-                                .otherwise("Tắt âm thanh"));
+        tip.textProperty().bind(javafx.beans.binding.Bindings.when(muted).then("Bật âm thanh").otherwise("Tắt âm thanh"));
         sound.setTooltip(tip);
-        sound.setOnAction(
-                e -> {
-                    muted.set(!muted.get());
-                    audio.mute(muted.get());
-                });
+        sound.setOnAction(e -> {
+            muted.set(!muted.get());
+            audio.mute(muted.get());
+        });
         return sound;
     }
 
@@ -164,22 +144,8 @@ public class ClientApp extends Application {
         ScreenLayout root = new ScreenLayout();
         root.art("dau-so-logo.png", 330, 60, 440, 160);
         root.put(soundButton(), 1032, 16, 48, 48);
-        root.imageButton(
-                        button("Đăng nhập", () -> auth(false, "")),
-                        "home-login.png",
-                        375,
-                        270,
-                        350,
-                        96)
-                .setId("home-login");
-        root.imageButton(
-                        button("Đăng ký", () -> auth(true, "")),
-                        "home-register.png",
-                        375,
-                        382,
-                        350,
-                        96)
-                .setId("home-register");
+        root.imageButton(button("Đăng nhập", () -> auth(false, "")), "home-login.png", 375, 270, 350, 96).setId("home-login");
+        root.imageButton(button("Đăng ký", () -> auth(true, "")), "home-register.png", 375, 382, 350, 96).setId("home-register");
         show(root, "Chào mừng", 1000, 564);
     }
 
@@ -188,16 +154,14 @@ public class ClientApp extends Application {
         if (modal != null) closeModal();
         ScreenLayout root = overlay();
         screens.getChildren().get(0).setVisible(false);
-        LoginRegisterScreen form =
-                new LoginRegisterScreen(this, root, registering, notice, accountName, soundButton());
+        LoginRegisterScreen form = new LoginRegisterScreen(this, root, registering, notice, accountName, soundButton());
         authError = form.error;
         authSubmit = form.submit;
     }
 
     void sendAuth(boolean registering, String name, String password) {
         accountName = name;
-        send(Message.of(registering ? "REGISTER" : "LOGIN",
-                "username", name, "password", password));
+        send(Message.of(registering ? "REGISTER" : "LOGIN", "username", name, "password", password));
     }
 
     private ScreenLayout overlay() {
@@ -207,14 +171,12 @@ public class ClientApp extends Application {
         modal = new ScreenLayout(false);
         modal.setId("screen-modal");
         screens.getChildren().add(modal);
-        modal.addEventFilter(
-                javafx.scene.input.KeyEvent.KEY_PRESSED,
-                e -> {
-                    if (e.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
-                        dismissModal();
-                        e.consume();
-                    }
-                });
+        modal.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+                dismissModal();
+                e.consume();
+            }
+        });
         modal.setFocusTraversable(true);
         modal.requestFocus();
         return modal;
@@ -263,32 +225,23 @@ public class ClientApp extends Application {
         Label message = label(text, "screen-body");
         message.setWrapText(true);
         root.put(message, 350, 220, 400, 150);
-        root.imageButton(
-                button("Xác nhận", this::closeModal), "confirm-button.png", 470, 390, 160, 48);
+        root.imageButton(button("Xác nhận", this::closeModal), "confirm-button.png", 470, 390, 160, 48);
     }
 
-    <T> TableColumn<T, String> column(
-            String title, java.util.function.Function<T, String> value) {
+    <T> TableColumn<T, String> column(String title, java.util.function.Function<T, String> value) {
         TableColumn<T, String> c = new TableColumn<>(title);
-        c.setCellValueFactory(
-                v -> new javafx.beans.property.ReadOnlyStringWrapper(value.apply(v.getValue())));
-        boolean left =
-                title.equals("Tên")
-                        || title.equals("Người chơi")
-                        || title.equals("Đối thủ")
-                        || title.equals("Gợi ý");
+        c.setCellValueFactory(v -> new javafx.beans.property.ReadOnlyStringWrapper(value.apply(v.getValue())));
+        boolean left = title.equals("Tên") || title.equals("Người chơi") || title.equals("Đối thủ") || title.equals("Gợi ý");
         c.getStyleClass().add(left ? "text-column" : "value-column");
-        c.setCellFactory(
-                col ->
-                        new TableCell<T, String>() {
-                            @Override
-                            protected void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                setText(empty ? null : item);
-                                setAlignment(left ? Pos.CENTER_LEFT : Pos.CENTER);
-                                setTooltip(empty || item == null ? null : new Tooltip(item));
-                            }
-                        });
+        c.setCellFactory(col -> new TableCell<T, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setAlignment(left ? Pos.CENTER_LEFT : Pos.CENTER);
+                setTooltip(empty || item == null ? null : new Tooltip(item));
+            }
+        });
         return c;
     }
 
@@ -300,19 +253,14 @@ public class ClientApp extends Application {
         root.input(field, 385, 255, 330);
         Label error = label("", "screen-error");
         root.put(error, 385, 308, 330, 40);
-        Button save =
-                button(
-                        "Xác nhận",
-                        () -> {
-                            String value = field.getText().strip();
-                            if (value.isEmpty()
-                                    || value.codePointCount(0, value.length()) > 20
-                                    || value.codePoints().anyMatch(Character::isISOControl)) {
-                                error.setText("Nhập tên từ 1 đến 20 ký tự.");
-                                return;
-                            }
-                            send(Message.of("PROFILE_UPDATE", "displayName", value));
-                        });
+        Button save = button("Xác nhận", () -> {
+            String value = field.getText().strip();
+            if (value.isEmpty() || value.codePointCount(0, value.length()) > 20 || value.codePoints().anyMatch(Character::isISOControl)) {
+                error.setText("Nhập tên từ 1 đến 20 ký tự.");
+                return;
+            }
+            send(Message.of("PROFILE_UPDATE", "displayName", value));
+        });
         save.setId("profile-save");
         save.setDefaultButton(true);
         root.imageButton(save, "confirm-button.png", 352, 385, 180, 54);
@@ -337,20 +285,17 @@ public class ClientApp extends Application {
 
     private ComboBox<Integer> ranges() {
         ComboBox<Integer> c = new ComboBox<>(FXCollections.observableArrayList(100, 1000, 10000));
-        c.setConverter(
-                new javafx.util.StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer value) {
-                        return value == null
-                                ? ""
-                                : "1–" + String.format(java.util.Locale.GERMANY, "%,d", value);
-                    }
+        c.setConverter(new javafx.util.StringConverter<Integer>() {
+            @Override
+            public String toString(Integer value) {
+                return value == null ? "" : "1–" + String.format(java.util.Locale.GERMANY, "%,d", value);
+            }
 
-                    @Override
-                    public Integer fromString(String value) {
-                        throw new UnsupportedOperationException("Chọn phạm vi từ danh sách");
-                    }
-                });
+            @Override
+            public Integer fromString(String value) {
+                throw new UnsupportedOperationException("Chọn phạm vi từ danh sách");
+            }
+        });
         c.setValue(range);
         c.setPrefWidth(180);
         return c;
@@ -366,22 +311,11 @@ public class ClientApp extends Application {
         choice.setId("invite-range");
         root.put(choice, 540, 253, 190, 36);
         root.put(label("Đối thủ cần đồng ý để bắt đầu trận.", "screen-body"), 350, 309, 400, 30);
-        Button submit =
-                button(
-                        "Gửi lời mời",
-                        () -> {
-                            range = choice.getValue();
-                            send(
-                                    Message.of(
-                                            ended ? "REMATCH" : "INVITE",
-                                            "opponent",
-                                            opponentAccount,
-                                            "range",
-                                            "" + range,
-                                            "match",
-                                            "" + matchId));
-                            closeModal();
-                        });
+        Button submit = button("Gửi lời mời", () -> {
+            range = choice.getValue();
+            send(Message.of(ended ? "REMATCH" : "INVITE", "opponent", opponentAccount, "range", "" + range, "match", "" + matchId));
+            closeModal();
+        });
         submit.setId("send-invite");
         root.imageButton(submit, "send-invite.png", 352, 388, 180, 54);
         root.imageButton(button("Hủy", this::closeModal), "cancel-button.png", 568, 388, 180, 54);
@@ -400,26 +334,17 @@ public class ClientApp extends Application {
         Label error = label("", "screen-error");
         root.put(error, 350, 320, 400, 35);
         secretError = error;
-        Button confirm =
-                button(
-                        "Xác nhận",
-                        () -> {
-                            try {
-                                int number = Integer.parseInt(input.getText().trim());
-                                if (number < 1 || number > range) throw new NumberFormatException();
-                                send(
-                                        Message.of(
-                                                "SECRET",
-                                                "match",
-                                                "" + matchId,
-                                                "number",
-                                                "" + number));
-                                input.setDisable(true);
-                                root.lookup("#secret-confirm").setDisable(true);
-                            } catch (NumberFormatException ex) {
-                                error.setText("Nhập số nguyên từ 1 đến " + range);
-                            }
-                        });
+        Button confirm = button("Xác nhận", () -> {
+            try {
+                int number = Integer.parseInt(input.getText().trim());
+                if (number < 1 || number > range) throw new NumberFormatException();
+                send(Message.of("SECRET", "match", "" + matchId, "number", "" + number));
+                input.setDisable(true);
+                root.lookup("#secret-confirm").setDisable(true);
+            } catch (NumberFormatException ex) {
+                error.setText("Nhập số nguyên từ 1 đến " + range);
+            }
+        });
         confirm.setId("secret-confirm");
         root.imageButton(confirm, "confirm-button.png", 352, 388, 180, 54);
         root.imageButton(button("Hủy", this::dismissModal), "cancel-button.png", 568, 388, 180, 54);
@@ -447,64 +372,43 @@ public class ClientApp extends Application {
         history.getColumns().add(column("Gợi ý", GuessRow::hint));
         history.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         history.setSelectionModel(null);
-        guess.setOnKeyTyped(
-                e -> {
-                    if (!e.getCharacter().isBlank()) audio.play("key");
-                });
-        guessButton =
-                button(
-                        "ĐOÁN SỐ",
-                        () -> {
-                            if (ended || guess.isDisabled()) return;
-                            try {
-                                int number = Integer.parseInt(guess.getText().trim());
-                                if (number < 1 || number > range) throw new NumberFormatException();
-                                guess.setDisable(true);
-                                guessButton.setDisable(true);
-                                audio.play("guess");
-                                send(
-                                        Message.of(
-                                                "GUESS",
-                                                "match",
-                                                "" + matchId,
-                                                "turn",
-                                                "" + turnId,
-                                                "number",
-                                                "" + number));
-                                guess.clear();
-                                hint.setVisible(false);
-                                hint.setManaged(false);
-                            } catch (NumberFormatException ex) {
-                                audio.play("warning");
-                                hint.setText("Nhập số nguyên từ 1 đến " + range);
-                                hint.setVisible(true);
-                                hint.setManaged(true);
-                            }
-                        },
-                        false);
+        guess.setOnKeyTyped(e -> {
+            if (!e.getCharacter().isBlank()) audio.play("key");
+        });
+        guessButton = button("ĐOÁN SỐ", () -> {
+            if (ended || guess.isDisabled()) return;
+            try {
+                int number = Integer.parseInt(guess.getText().trim());
+                if (number < 1 || number > range) throw new NumberFormatException();
+                guess.setDisable(true);
+                guessButton.setDisable(true);
+                audio.play("guess");
+                send(Message.of("GUESS", "match", "" + matchId, "turn", "" + turnId, "number", "" + number));
+                guess.clear();
+                hint.setVisible(false);
+                hint.setManaged(false);
+            } catch (NumberFormatException ex) {
+                audio.play("warning");
+                hint.setText("Nhập số nguyên từ 1 đến " + range);
+                hint.setVisible(true);
+                hint.setManaged(true);
+            }
+        }, false);
         guess.setOnAction(event -> guessButton.fire());
         guess.setDisable(true);
         guessButton.setDisable(true);
         history.setPlaceholder(new Label("Chưa có dự đoán"));
-        history.setRowFactory(
-                table ->
-                        new TableRow<GuessRow>() {
-                            @Override
-                            protected void updateItem(GuessRow item, boolean empty) {
-                                super.updateItem(item, empty);
-                                getStyleClass()
-                                        .removeAll("your-guess", "opponent-guess", "latest-guess");
-                                if (!empty && item != null) {
-                                    getStyleClass()
-                                            .add(
-                                                    item.player().equals(username)
-                                                            ? "your-guess"
-                                                            : "opponent-guess");
-                                    if (getIndex() == table.getItems().size() - 1)
-                                        getStyleClass().add("latest-guess");
-                                }
-                            }
-                        });
+        history.setRowFactory(table -> new TableRow<GuessRow>() {
+            @Override
+            protected void updateItem(GuessRow item, boolean empty) {
+                super.updateItem(item, empty);
+                getStyleClass().removeAll("your-guess", "opponent-guess", "latest-guess");
+                if (!empty && item != null) {
+                    getStyleClass().add(item.player().equals(username) ? "your-guess" : "opponent-guess");
+                    if (getIndex() == table.getItems().size() - 1) getStyleClass().add("latest-guess");
+                }
+            }
+        });
         chat = new TextArea();
         chat.setEditable(false);
         chat.setWrapText(true);
@@ -512,38 +416,16 @@ public class ClientApp extends Application {
         TextField message = new TextField();
         message.setId("chat-input");
         message.setPromptText("Nhập tin nhắn");
-        Button send =
-                button(
-                        "",
-                        () -> {
-                            if (!message.getText().isBlank()) {
-                                send(
-                                        Message.of(
-                                                "CHAT",
-                                                "match",
-                                                "" + matchId,
-                                                "text",
-                                                message.getText().trim()));
-                                message.clear();
-                            }
-                        });
+        Button send = button("", () -> {
+            if (!message.getText().isBlank()) {
+                send(Message.of("CHAT", "match", "" + matchId, "text", message.getText().trim()));
+                message.clear();
+            }
+        });
         send.setAccessibleText("Gửi tin nhắn");
         send.setId("chat-send");
         message.setOnAction(e -> send.fire());
-        battleScreen =
-                new BattleScreen(
-                        username,
-                        opponent,
-                        range,
-                        status,
-                        clock,
-                        history,
-                        guess,
-                        guessButton,
-                        hint,
-                        chat,
-                        message,
-                        send);
+        battleScreen = new BattleScreen(username, opponent, range, status, clock, history, guess, guessButton, hint, chat, message, send);
         battleScreen.soundButton(soundButton());
         show(battleScreen, "Phòng đấu", 1000, 564);
         battleScreen.remaining(30);
@@ -569,12 +451,7 @@ public class ClientApp extends Application {
     }
 
     private void updateClock() {
-        int remaining =
-                (int)
-                        Math.max(
-                                0,
-                                (clockDeadline - System.nanoTime() + 999_999_999L)
-                                        / 1_000_000_000L);
+        int remaining = (int) Math.max(0, (clockDeadline - System.nanoTime() + 999_999_999L) / 1_000_000_000L);
         if (remaining != seconds && remaining <= 5 && remaining > 0) audio.play("countdown");
         seconds = remaining;
         battleScreen.remaining(seconds);
@@ -596,12 +473,8 @@ public class ClientApp extends Application {
         guessButton.setDisable(true);
         boolean won = message.get("winner").equals(accountName);
         String reason = message.get("reason");
-        String text =
-                reason.equals("EXACT")
-                        ? (won
-                                ? "Bạn đã đoán đúng số bí mật của đối thủ."
-                                : "Đối thủ đã đoán đúng số bí mật của bạn.")
-                        : (won ? "Đối thủ đã rời trận hoặc mất kết nối." : "Bạn đã rời trận đấu.");
+        String text = reason.equals("EXACT") ? (won ? "Bạn đã đoán đúng số bí mật của đối thủ." : "Đối thủ đã đoán đúng số bí mật của bạn.")
+                                             : (won ? "Đối thủ đã rời trận hoặc mất kết nối." : "Bạn đã rời trận đấu.");
         battleScreen.showResult(won, text, this::invite, () -> send(Message.of("LOBBY")));
         audio.play(won ? "win" : "lose");
     }
@@ -616,20 +489,15 @@ public class ClientApp extends Application {
     // Tạo kết nối khi cần; mọi phản hồi được chuyển về luồng JavaFX.
     void send(Message message) {
         if (network == null)
-            network =
-                    new NetworkClient(
-                            result -> Platform.runLater(() -> handleMessage(result)),
-                            error ->
-                                    Platform.runLater(
-                                            () -> {
-                                                network = null;
-                                                loggedIn = false;
-                                                stopTimer();
-                                                matchId = 0;
-                                                ended = false;
-                                                login();
-                                                info(error);
-                                            }));
+            network = new NetworkClient(result -> Platform.runLater(() -> handleMessage(result)), error -> Platform.runLater(() -> {
+                network = null;
+                loggedIn = false;
+                stopTimer();
+                matchId = 0;
+                ended = false;
+                login();
+                info(error);
+            }));
         network.send(message);
     }
 
@@ -655,50 +523,25 @@ public class ClientApp extends Application {
                 login();
             }
             case "USERS" -> {
-                playerData.setAll(
-                        message.rows().stream()
-                                .filter(row -> !row.get("username").equals(accountName))
-                                .map(
-                                        row ->
-                                                new OnlinePlayer(
-                                                        row.get("username"),
-                                                        row.get("displayName"),
-                                                        row.get("wins"),
-                                                        row.get("state")))
-                                .toList());
+                playerData.setAll(message.rows().stream()
+                    .filter(row -> !row.get("username").equals(accountName))
+                    .map(row -> new OnlinePlayer(row.get("username"), row.get("displayName"), row.get("wins"), row.get("state")))
+                    .toList());
             }
             case "RANKING" ->
-                    rankingData.setAll(
-                            message.rows().stream()
-                                    .map(
-                                            row ->
-                                                    new RankingRow(
-                                                            row.get("display_name"),
-                                                            row.get("wins"),
-                                                            row.get("rate") + "%"))
-                                    .toList());
+                rankingData.setAll(message.rows().stream()
+                    .map(row -> new RankingRow(row.get("display_name"), row.get("wins"), row.get("rate") + "%"))
+                    .toList());
             case "HISTORY" -> {
-                matchData.setAll(
-                        message.rows().stream()
-                                .map(
-                                        row ->
-                                                new MatchHistoryRow(
-                                                        row.get("id"),
-                                                        row.get("started_at"),
-                                                        row.get("opponent"),
-                                                        "1–" + row.get("range_max"),
-                                                        row.get("result")))
-                                .toList());
+                matchData.setAll(message.rows().stream()
+                    .map(row -> new MatchHistoryRow(
+                        row.get("id"), row.get("started_at"), row.get("opponent"), "1–" + row.get("range_max"), row.get("result")))
+                    .toList());
             }
             case "PROFILE" -> {
                 if (statTotal != null)
-                    statTotal.setText(
-                            "Tổng số trận: "
-                                    + message.get("total")
-                                    + "  ·  Thắng: "
-                                    + message.get("wins")
-                                    + "  ·  Thua: "
-                                    + message.get("losses"));
+                    statTotal.setText("Tổng số trận: " + message.get("total") + "  ·  Thắng: " + message.get("wins")
+                        + "  ·  Thua: " + message.get("losses"));
                 if (statRate != null) statRate.setText("Tỷ lệ thắng: " + message.get("rate") + "%");
             }
             case "PROFILE_UPDATED" -> {
@@ -710,20 +553,14 @@ public class ClientApp extends Application {
             case "INVITED" -> incomingInvite(message);
             case "INVITE_SENT" -> {
                 pendingInvite = message.get("id");
-                waiting(
-                        "ĐANG CHỜ ĐỐI THỦ",
-                        message.get("text"),
-                        () -> send(Message.of("INVITE_CANCEL")));
+                waiting("ĐANG CHỜ ĐỐI THỦ", message.get("text"), () -> send(Message.of("INVITE_CANCEL")));
                 modalKind = "invite";
             }
             case "INVITE_DECLINED", "INVITE_CANCELLED" -> {
                 if (message.get("id").equals(pendingInvite)) {
                     pendingInvite = "";
                     closeModal();
-                    info(
-                            message.type().equals("INVITE_DECLINED")
-                                    ? message.get("text")
-                                    : "Lời mời đã bị hủy hoặc hết hạn.");
+                    info(message.type().equals("INVITE_DECLINED") ? message.get("text") : "Lời mời đã bị hủy hoặc hết hạn.");
                 }
             }
             case "MATCH_CREATED" -> {
@@ -737,23 +574,14 @@ public class ClientApp extends Application {
                 chooseSecret();
             }
             case "SECRET_OK" -> {
-                waiting(
-                        "ĐÃ CHỌN SỐ",
-                        "Đang chờ đối thủ chọn số bí mật…",
-                        () -> send(Message.of("LEAVE")));
+                waiting("ĐÃ CHỌN SỐ", "Đang chờ đối thủ chọn số bí mật…", () -> send(Message.of("LEAVE")));
                 modalKind = "waiting-secret";
             }
             case "TURN" -> showTurn(message);
             case "GUESS_RESULT" -> {
                 if (message.number("match") != matchId || ended) return;
                 String player = message.get("player").equals(accountName) ? username : opponent;
-                history.getItems()
-                        .add(
-                                new GuessRow(
-                                        message.get("turn"),
-                                        player,
-                                        message.get("number"),
-                                        hintText(message.get("hint"))));
+                history.getItems().add(new GuessRow(message.get("turn"), player, message.get("number"), hintText(message.get("hint"))));
                 history.scrollTo(history.getItems().size() - 1);
                 if (!message.get("hint").equals("EXACT")) audio.play("hint");
             }
@@ -776,10 +604,7 @@ public class ClientApp extends Application {
                     chooseSecret();
                     secretError.setText(message.get("text"));
                 } else {
-                    if (message.get("request").equals("GUESS")
-                            && !ended
-                            && yourTurn
-                            && seconds > 0) {
+                    if (message.get("request").equals("GUESS") && !ended && yourTurn && seconds > 0) {
                         guess.setDisable(false);
                         guessButton.setDisable(false);
                     }
@@ -820,34 +645,14 @@ public class ClientApp extends Application {
     private void incomingInvite(Message message) {
         pendingInvite = message.get("id");
         audio.play("invite");
-        ScreenLayout root =
-                modal(
-                        Boolean.parseBoolean(message.get("rematch"))
-                                ? "LỜI MỜI CHƠI LẠI"
-                                : "NHẬN LỜI MỜI");
+        ScreenLayout root = modal(Boolean.parseBoolean(message.get("rematch")) ? "LỜI MỜI CHƠI LẠI" : "NHẬN LỜI MỜI");
         modalKind = "invite";
-        Runnable decline =
-                () -> send(Message.of("INVITE_REPLY", "id", message.get("id"), "accept", "false"));
+        Runnable decline = () -> send(Message.of("INVITE_REPLY", "id", message.get("id"), "accept", "false"));
         modalCancel = decline;
-        Label text =
-                label(
-                        message.get("opponentName")
-                                + " mời bạn thi đấu.\nPhạm vi: 1–"
-                                + message.get("range"),
-                        "screen-body");
+        Label text = label(message.get("opponentName") + " mời bạn thi đấu.\nPhạm vi: 1–" + message.get("range"), "screen-body");
         text.setWrapText(true);
         root.put(text, 350, 225, 400, 110);
-        Button accept =
-                button(
-                        "Đồng ý",
-                        () ->
-                                send(
-                                        Message.of(
-                                                "INVITE_REPLY",
-                                                "id",
-                                                message.get("id"),
-                                                "accept",
-                                                "true")));
+        Button accept = button("Đồng ý", () -> send(Message.of("INVITE_REPLY", "id", message.get("id"), "accept", "true")));
         accept.setId("accept-invite");
         root.imageButton(accept, "invite-accept.png", 352, 385, 180, 54);
         Button refuse = button("Từ chối", decline);
@@ -872,13 +677,7 @@ public class ClientApp extends Application {
         table.setSelectionModel(null);
         table.setPlaceholder(new Label("Trận kết thúc trước khi có lượt đoán"));
         for (var row : message.rows())
-            table.getItems()
-                    .add(
-                            new GuessRow(
-                                    row.get("turn_no"),
-                                    row.get("player"),
-                                    row.get("number"),
-                                    hintText(row.get("hint"))));
+            table.getItems().add(new GuessRow(row.get("turn_no"), row.get("player"), row.get("number"), hintText(row.get("hint"))));
         root.put(table, 230, 192, 640, 275);
     }
 

@@ -34,19 +34,8 @@ final class BattleScreen extends Pane {
     private ImageView turnArt;
     private Animation animation;
 
-    BattleScreen(
-            String username,
-            String opponent,
-            int range,
-            Label status,
-            Label clock,
-            TableView<?> history,
-            TextField guess,
-            Button guessButton,
-            Label hint,
-            TextArea chat,
-            TextField message,
-            Button send) {
+    BattleScreen(String username, String opponent, int range, Label status, Label clock, TableView<?> history, TextField guess,
+        Button guessButton, Label hint, TextArea chat, TextField message, Button send) {
         getStyleClass().add("battle-screen");
         getStyleClass().add("game-theme");
         this.status = status;
@@ -56,16 +45,13 @@ final class BattleScreen extends Pane {
         ImageView background = image("background.png", 0, 0, WIDTH, HEIGHT);
         Image bg = background.getImage();
         double cropHeight = bg.getWidth() * HEIGHT / WIDTH;
-        background.setViewport(
-                new Rectangle2D(0, (bg.getHeight() - cropHeight) / 2, bg.getWidth(), cropHeight));
+        background.setViewport(new Rectangle2D(0, (bg.getHeight() - cropHeight) / 2, bg.getWidth(), cropHeight));
         {
             playerCard = image("player-self.png", 116, 24, 300, 112);
             opponentCard = image("player-opponent-mirrored.png", 684, 24, 300, 112);
             turnArt = image("clock-turn-self.png", 425, 0, 250, 164);
-            label(username, "battle-card-name", 226, 81, 166, 29)
-                    .setTooltip(new javafx.scene.control.Tooltip(username));
-            label(opponent, "battle-card-name", 708, 81, 166, 29)
-                    .setTooltip(new javafx.scene.control.Tooltip(opponent));
+            label(username, "battle-card-name", 226, 81, 166, 29).setTooltip(new javafx.scene.control.Tooltip(username));
+            label(opponent, "battle-card-name", 708, 81, 166, 29).setTooltip(new javafx.scene.control.Tooltip(opponent));
             style(clock, "battle-clock", 515, 37, 70, 51);
             style(status, "battle-turn", 456, 112, 188, 28);
             status.setVisible(false);
@@ -135,14 +121,7 @@ final class BattleScreen extends Pane {
     }
 
     // Giữ đúng tỷ lệ phần trang trí trên/dưới, chỉ kéo giãn phần trống ở giữa.
-    private void panel(
-            String file,
-            double x,
-            double y,
-            double w,
-            double h,
-            double topPixels,
-            double bottomPixels) {
+    private void panel(String file, double x, double y, double w, double h, double topPixels, double bottomPixels) {
         Image source = asset(file);
         Rectangle2D crop = viewport(file);
         double scale = w / crop.getWidth();
@@ -194,8 +173,7 @@ final class BattleScreen extends Pane {
         return label;
     }
 
-    private void style(
-            javafx.scene.layout.Region node, String css, double x, double y, double w, double h) {
+    private void style(javafx.scene.layout.Region node, String css, double x, double y, double w, double h) {
         node.getStyleClass().add(css);
         if (node instanceof Label label) label.setAlignment(Pos.CENTER);
         place(node, x, y, w, h);
@@ -208,14 +186,11 @@ final class BattleScreen extends Pane {
         }
         ImageView art = image(image, x, y, w, h);
         style(node, "battle-image-button", x, y, w, h);
-        art.opacityProperty()
-                .bind(javafx.beans.binding.Bindings.when(node.disabledProperty()).then(0.5).otherwise(1.0));
-        node.hoverProperty()
-                .addListener(
-                        (o, oldValue, hovered) -> {
-                            art.setScaleX(hovered ? 1.025 : 1);
-                            art.setScaleY(hovered ? 1.025 : 1);
-                        });
+        art.opacityProperty().bind(javafx.beans.binding.Bindings.when(node.disabledProperty()).then(0.5).otherwise(1.0));
+        node.hoverProperty().addListener((o, oldValue, hovered) -> {
+            art.setScaleX(hovered ? 1.025 : 1);
+            art.setScaleY(hovered ? 1.025 : 1);
+        });
     }
 
     private void resizeCanvas() {
@@ -240,18 +215,16 @@ final class BattleScreen extends Pane {
 
     void remaining(int seconds) {
         clock.setText(seconds > 0 ? String.valueOf(seconds) : "0");
-        clock.pseudoClassStateChanged(
-                javafx.css.PseudoClass.getPseudoClass("warning"), seconds > 0 && seconds <= 5);
+        clock.pseudoClassStateChanged(javafx.css.PseudoClass.getPseudoClass("warning"), seconds > 0 && seconds <= 5);
     }
 
     void submit(int number, boolean yours, Runnable delivered) {
         stop();
         PauseTransition pause = new PauseTransition(Duration.millis(180));
-        pause.setOnFinished(
-                e -> {
-                    animation = null;
-                    delivered.run();
-                });
+        pause.setOnFinished(e -> {
+            animation = null;
+            delivered.run();
+        });
         animation = pause;
         pause.play();
     }

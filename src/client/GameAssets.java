@@ -26,13 +26,11 @@ final class GameAssets {
     static Image image(String name) {
         if (!bounds.containsKey(name)) throw new IllegalStateException("Thiếu vùng cắt: " + name);
         String file = FOLDER + name;
-        return images.computeIfAbsent(
-                file,
-                path -> {
-                    var url = GameAssets.class.getResource(path);
-                    if (url == null) throw new IllegalStateException("Thiếu ảnh: " + path);
-                    return new Image(url.toExternalForm());
-                });
+        return images.computeIfAbsent(file, path -> {
+            var url = GameAssets.class.getResource(path);
+            if (url == null) throw new IllegalStateException("Thiếu ảnh: " + path);
+            return new Image(url.toExternalForm());
+        });
     }
 
     static Rectangle2D bounds(String name) {
@@ -41,9 +39,6 @@ final class GameAssets {
         if (raw == null) throw new IllegalStateException("Thiếu vùng cắt: " + name);
         String[] values = raw.split(",");
         return new Rectangle2D(
-                Double.parseDouble(values[0]),
-                Double.parseDouble(values[1]),
-                Double.parseDouble(values[2]),
-                Double.parseDouble(values[3]));
+            Double.parseDouble(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]));
     }
 }

@@ -28,10 +28,9 @@ final class ScreenLayout extends Pane {
         if (background) {
             ImageView bg = art("background.png", 0, 0, 1100, 620);
             double ch = bg.getImage().getWidth() * 620 / 1100;
-            bg.setViewport(
-                    new Rectangle2D(
-                            0, (bg.getImage().getHeight() - ch) / 2, bg.getImage().getWidth(), ch));
-        } else setStyle("-fx-background-color:rgba(16,30,20,.45);");
+            bg.setViewport(new Rectangle2D(0, (bg.getImage().getHeight() - ch) / 2, bg.getImage().getWidth(), ch));
+        } else
+            setStyle("-fx-background-color:rgba(16,30,20,.45);");
         widthProperty().addListener((o, a, b) -> resize());
         heightProperty().addListener((o, a, b) -> resize());
     }
@@ -86,8 +85,7 @@ final class ScreenLayout extends Pane {
             }
             return v;
         }
-        double iw = b == null ? v.getImage().getWidth() : b.getWidth(),
-                ih = b == null ? v.getImage().getHeight() : b.getHeight();
+        double iw = b == null ? v.getImage().getWidth() : b.getWidth(), ih = b == null ? v.getImage().getHeight() : b.getHeight();
         double s = Math.min(w / iw, h / ih);
         return put(v, x + (w - iw * s) / 2, y + (h - ih * s) / 2, w, h);
     }
@@ -97,8 +95,7 @@ final class ScreenLayout extends Pane {
         Image source = GameAssets.image(file);
         Rectangle2D b = bounds(file);
         // Giữ nguyên vương miện và tiêu đề bảng; chỉ kéo giãn phần thân trống.
-        double cap = b.getHeight() * (file.equals("lobby-ranking.png") ? .32 : .24),
-                edge = cap * w / b.getWidth();
+        double cap = b.getHeight() * (file.equals("lobby-ranking.png") ? .32 : .24), edge = cap * w / b.getWidth();
         double[] sy = {b.getMinY(), b.getMinY() + cap, b.getMaxY() - cap};
         double[] sh = {cap, b.getHeight() - 2 * cap, cap};
         double[] dy = {0, edge, h - edge}, dh = {edge, h - 2 * edge, edge};
@@ -121,8 +118,7 @@ final class ScreenLayout extends Pane {
         ImageView v = icon(file, w);
         v.setFitHeight(h);
         button.setGraphic(v);
-        if (!button.getStyleClass().contains("image-button"))
-            button.getStyleClass().add("image-button");
+        if (!button.getStyleClass().contains("image-button")) button.getStyleClass().add("image-button");
         button.setMinSize(w, h);
         button.setPrefSize(w, h);
         button.setMaxSize(w, h);
@@ -200,16 +196,15 @@ final class ScreenLayout extends Pane {
         eye.setGraphic(new Group(iconBounds, outline, pupil, slash));
         eye.setAccessibleText("Hiện mật khẩu");
         eye.getStyleClass().add("screen-eye");
-        eye.setOnAction(
-                e -> {
-                    boolean show = eye.isSelected();
-                    visible.setVisible(show);
-                    visible.setManaged(show);
-                    password.setVisible(!show);
-                    password.setManaged(!show);
-                    slash.setVisible(show);
-                    eye.setAccessibleText(show ? "Ẩn mật khẩu" : "Hiện mật khẩu");
-                });
+        eye.setOnAction(e -> {
+            boolean show = eye.isSelected();
+            visible.setVisible(show);
+            visible.setManaged(show);
+            password.setVisible(!show);
+            password.setManaged(!show);
+            slash.setVisible(show);
+            eye.setAccessibleText(show ? "Ẩn mật khẩu" : "Hiện mật khẩu");
+        });
         put(eye, x + w - 40, y + 7, 32, 32);
     }
 

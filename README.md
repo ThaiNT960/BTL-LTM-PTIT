@@ -36,7 +36,7 @@ server.port=12345
 Nếu chạy client trên máy khác, thay `server.host` bằng IP của máy chạy server. Trước khi chạy, thay `db.password` bằng mật khẩu MySQL của máy bạn.
 ## 3. Chạy chương trình
 
-Mở project bằng NetBeans, chọn cấu hình **Server** rồi chạy. Giữ server hoạt động, mở hai phiên client bằng cấu hình **Client** (hoặc Run File `client.Launcher` hai lần). Đăng nhập bằng `user1 / 123456` và `user2 / 123456` để thi đấu. Server sử dụng cổng TCP `12345` theo `config/server.properties`.
+Mở project bằng NetBeans, chọn cấu hình **Server** rồi chạy. Giữ server hoạt động, mở hai phiên client bằng cấu hình **Client** (hoặc Run File `client.ClientApp` hai lần). Đăng nhập bằng `user1 / 123456` và `user2 / 123456` để thi đấu. Server sử dụng cổng TCP `12345` theo `config/server.properties`.
 
 ## Nguồn tài nguyên
 

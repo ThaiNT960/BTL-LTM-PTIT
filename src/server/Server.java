@@ -22,8 +22,7 @@ public final class Server implements AutoCloseable {
     private final long turnMillis;
     private volatile boolean closing;
 
-    private record Invitation(
-            String id, ClientHandler from, ClientHandler to, int range, long expires) {}
+    private record Invitation(String id, ClientHandler from, ClientHandler to, int range, long expires) {}
 
     public Server(DatabaseManager db, int port, long turnMillis) throws Exception {
         this.db = db;
@@ -72,22 +71,12 @@ public final class Server implements AutoCloseable {
                 case "LOGIN" -> {
                     require(c.user == null, "Bạn đã đăng nhập.");
                     var u = db.find(m.get("username").trim());
-                    require(
-                            u != null && Passwords.verify(m.get("password"), u.hash()),
-                            "Sai tài khoản hoặc mật khẩu.");
+                    require(u != null && Passwords.verify(m.get("password"), u.hash()), "Sai tài khoản hoặc mật khẩu.");
 
-                    require(
-                            !online.containsKey(u.username()),
-                            "Tài khoản đang đăng nhập ở nơi khác.");
+                    require(!online.containsKey(u.username()), "Tài khoản đang đăng nhập ở nơi khác.");
                     c.user = u;
                     online.put(u.username(), c);
-                    c.send(
-                            Message.of(
-                                    "LOGIN_OK",
-                                    "username",
-                                    u.username(),
-                                    "displayName",
-                                    u.displayName()));
+                    c.send(Message.of("LOGIN_OK", "username", u.username(), "displayName", u.displayName()));
                     lobby(c);
                 }
                 default -> {
@@ -99,13 +88,7 @@ public final class Server implements AutoCloseable {
             c.send(Message.of("ERROR", "request", m.type(), "text", ex.getMessage()));
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, "Không xử lý được yêu cầu: " + m.type(), ex);
-            c.send(
-                    Message.of(
-                            "ERROR",
-                            "request",
-                            m.type(),
-                            "text",
-                            "Không thể xử lý yêu cầu hoặc lưu dữ liệu. Hãy thử lại."));
+            c.send(Message.of("ERROR", "request", m.type(), "text", "Không thể xử lý yêu cầu hoặc lưu dữ liệu. Hãy thử lại."));
         }
     }
 
@@ -130,11 +113,7 @@ public final class Server implements AutoCloseable {
             }
             case "PROFILE" -> {
                 var u = db.find(c.user.username());
-                var stats =
-                        db.ranking().stream()
-                                .filter(r -> r.get("username").equals(u.username()))
-                                .findFirst()
-                                .orElse(new HashMap<>());
+                var stats = db.ranking().stream().filter(r -> r.get("username").equals(u.username())).findFirst().orElse(new HashMap<>());
                 Message result = Message.of("PROFILE", "displayName", u.displayName());
                 result.data().putAll(stats);
                 c.send(result);
@@ -142,10 +121,8 @@ public final class Server implements AutoCloseable {
             case "PROFILE_UPDATE" -> {
                 String name = m.get("displayName").trim();
                 require(
-                        !name.isEmpty()
-                                && name.codePointCount(0, name.length()) <= 20
-                                && name.codePoints().noneMatch(Character::isISOControl),
-                        "Tên hiển thị dài từ 1 đến 20 ký tự.");
+                    !name.isEmpty() && name.codePointCount(0, name.length()) <= 20 && name.codePoints().noneMatch(Character::isISOControl),
+                    "Tên hiển thị dài từ 1 đến 20 ký tự.");
                 db.profile(c.user.id(), name);
                 c.user = db.find(c.user.username());
                 c.send(Message.of("PROFILE_UPDATED", "displayName", name));
@@ -176,22 +153,9 @@ public final class Server implements AutoCloseable {
                 db.guess(r.id, r.turn, c.user.id(), n, hint);
                 // Khóa trận đoán đúng trước khi thông báo, tránh xử thua do mất kết nối.
                 if (hint.equals("EXACT")) r.ended = true;
-                both(
-                        r,
-                        Message.of(
-                                "GUESS_RESULT",
-                                "match",
-                                "" + r.id,
-                                "turn",
-                                "" + r.turn,
-                                "player",
-                                c.user.username(),
-                                "displayName",
-                                c.user.displayName(),
-                                "number",
-                                "" + n,
-                                "hint",
-                                hint));
+                both(r,
+                    Message.of("GUESS_RESULT", "match", "" + r.id, "turn", "" + r.turn, "player", c.user.username(), "displayName",
+                        c.user.displayName(), "number", "" + n, "hint", hint));
                 if (hint.equals("EXACT")) complete(r, c, "EXACT");
                 else {
                     r.current = r.other(c);
@@ -201,22 +165,10 @@ public final class Server implements AutoCloseable {
             case "CHAT" -> {
                 GameRoom r = room(c, m);
                 String text = m.get("text").trim();
-                require(
-                        !text.isEmpty() && text.length() <= 1000,
-                        "Tin nhắn dài từ 1 đến 1000 ký tự.");
+                require(!text.isEmpty() && text.length() <= 1000, "Tin nhắn dài từ 1 đến 1000 ký tự.");
                 db.chat(r.id, c.user.id(), text);
-                both(
-                        r,
-                        Message.of(
-                                "CHAT",
-                                "match",
-                                "" + r.id,
-                                "player",
-                                c.user.username(),
-                                "displayName",
-                                c.user.displayName(),
-                                "text",
-                                text));
+                both(r,
+                    Message.of("CHAT", "match", "" + r.id, "player", c.user.username(), "displayName", c.user.displayName(), "text", text));
             }
             case "LEAVE" -> {
                 leave(c, "QUIT");
@@ -227,8 +179,7 @@ public final class Server implements AutoCloseable {
                 lobby(c);
             }
             case "HISTORY" -> c.send(Message.rows("HISTORY", db.history(c.user.id())));
-            case "DETAILS" ->
-                    c.send(Message.rows("DETAILS", db.details(m.number("match"), c.user.id())));
+            case "DETAILS" -> c.send(Message.rows("DETAILS", db.details(m.number("match"), c.user.id())));
             case "RANKING" -> c.send(Message.rows("RANKING", db.ranking()));
             case "INVITE_CANCEL" -> cancelInvitations(c);
             default -> throw new IllegalArgumentException("Lệnh không hợp lệ.");
@@ -239,51 +190,23 @@ public final class Server implements AutoCloseable {
     private void invite(ClientHandler c, Message m) throws Exception {
         require(c.room == null, "Bạn đang chơi.");
         ClientHandler to = online.get(m.get("opponent"));
-        require(
-                to != null && to != c && !to.closed.get() && to.room == null,
-                "Đối thủ không sẵn sàng.");
+        require(to != null && to != c && !to.closed.get() && to.room == null, "Đối thủ không sẵn sàng.");
         long rawRange = m.number("range");
         require(rawRange == 100 || rawRange == 1000 || rawRange == 10000, "Phạm vi không hợp lệ.");
         int range = (int) rawRange;
         long match = 0;
         if (m.type().equals("REMATCH")) {
             match = m.number("match");
-            require(
-                    match > 0
-                            && c.lastMatch == match
-                            && to.lastMatch == match
-                            && c.lastOpponent.equals(to.user.username()),
-                    "Đối thủ đã rời phòng hoặc trận không hợp lệ.");
+            require(match > 0 && c.lastMatch == match && to.lastMatch == match && c.lastOpponent.equals(to.user.username()),
+                "Đối thủ đã rời phòng hoặc trận không hợp lệ.");
         }
-        require(
-                invitations.values().stream()
-                        .noneMatch(i -> i.from == c || i.to == c || i.from == to || i.to == to),
-                "Một người đang có lời mời chờ phản hồi.");
+        require(invitations.values().stream().noneMatch(i -> i.from == c || i.to == c || i.from == to || i.to == to),
+            "Một người đang có lời mời chờ phản hồi.");
         String id = UUID.randomUUID().toString();
-        invitations.put(
-                id,
-                new Invitation(
-                        id, c, to, range, System.nanoTime() + TimeUnit.SECONDS.toNanos(60)));
-        to.send(
-                Message.of(
-                        "INVITED",
-                        "id",
-                        id,
-                        "opponent",
-                        c.user.username(),
-                        "opponentName",
-                        c.user.displayName(),
-                        "range",
-                        "" + range,
-                        "rematch",
-                        "" + (match > 0)));
-        c.send(
-                Message.of(
-                        "INVITE_SENT",
-                        "id",
-                        id,
-                        "text",
-                        "Đã gửi yêu cầu tới " + to.user.username()));
+        invitations.put(id, new Invitation(id, c, to, range, System.nanoTime() + TimeUnit.SECONDS.toNanos(60)));
+        to.send(Message.of("INVITED", "id", id, "opponent", c.user.username(), "opponentName", c.user.displayName(), "range", "" + range,
+            "rematch", "" + (match > 0)));
+        c.send(Message.of("INVITE_SENT", "id", id, "text", "Đã gửi yêu cầu tới " + to.user.username()));
     }
 
     // Kiểm tra lời mời còn hiệu lực trước khi tạo phòng đấu.
@@ -293,17 +216,11 @@ public final class Server implements AutoCloseable {
         require(System.nanoTime() < i.expires, "Lời mời đã hết hạn.");
         if (!m.get("accept").equals("true")) {
             invitations.remove(i.id);
-            i.from.send(
-                    Message.of("INVITE_DECLINED", "id", i.id, "text", "Đối thủ từ chối lời mời."));
+            i.from.send(Message.of("INVITE_DECLINED", "id", i.id, "text", "Đối thủ từ chối lời mời."));
             c.send(Message.of("INVITE_DECLINED", "id", i.id, "text", "Bạn đã từ chối lời mời."));
             return;
         }
-        require(
-                i.from.user != null
-                        && !i.from.closed.get()
-                        && i.from.room == null
-                        && c.room == null,
-                "Người chơi không còn sẵn sàng.");
+        require(i.from.user != null && !i.from.closed.get() && i.from.room == null && c.room == null, "Người chơi không còn sẵn sàng.");
         long id = db.createMatch(i.from.user.id(), c.user.id(), i.range);
         GameRoom r = new GameRoom(id, i.from, c, i.range);
         rooms.put(id, r);
@@ -313,24 +230,13 @@ public final class Server implements AutoCloseable {
         cancelInvitations(c);
         cancelInvitations(i.from);
         for (ClientHandler p : List.of(r.a, r.b))
-            p.send(
-                    Message.of(
-                            "MATCH_CREATED",
-                            "match",
-                            "" + id,
-                            "range",
-                            "" + r.range,
-                            "opponent",
-                            r.other(p).user.username(),
-                            "opponentName",
-                            r.other(p).user.displayName()));
+            p.send(Message.of("MATCH_CREATED", "match", "" + id, "range", "" + r.range, "opponent", r.other(p).user.username(),
+                "opponentName", r.other(p).user.displayName()));
         broadcastUsers();
     }
 
     private GameRoom room(ClientHandler c, Message m) {
-        require(
-                c.room != null && !c.room.ended && c.room.id == m.number("match"),
-                "Trận đấu không còn hoạt động.");
+        require(c.room != null && !c.room.ended && c.room.id == m.number("match"), "Trận đấu không còn hoạt động.");
         return c.room;
     }
 
@@ -343,37 +249,17 @@ public final class Server implements AutoCloseable {
     // Bắt đầu lượt 30 giây; server giữ thời hạn chính thức.
     private void startTurn(GameRoom r) {
         r.beginTurn(turnMillis);
-        both(
-                r,
-                Message.of(
-                        "TURN",
-                        "match",
-                        "" + r.id,
-                        "turn",
-                        "" + r.turn,
-                        "player",
-                        r.current.user.username(),
-                        "remainingMillis",
-                        "" + turnMillis));
+        both(r,
+            Message.of(
+                "TURN", "match", "" + r.id, "turn", "" + r.turn, "player", r.current.user.username(), "remainingMillis", "" + turnMillis));
     }
 
     // Lưu lượt hết giờ và tự chuyển lượt cho đối thủ.
     private void timeout(GameRoom r) throws Exception {
         db.guess(r.id, r.turn, r.current.user.id(), null, "TIMEOUT");
-        both(
-                r,
-                Message.of(
-                        "GUESS_RESULT",
-                        "match",
-                        "" + r.id,
-                        "turn",
-                        "" + r.turn,
-                        "player",
-                        r.current.user.username(),
-                        "number",
-                        "—",
-                        "hint",
-                        "TIMEOUT"));
+        both(r,
+            Message.of("GUESS_RESULT", "match", "" + r.id, "turn", "" + r.turn, "player", r.current.user.username(), "number", "—", "hint",
+                "TIMEOUT"));
         r.current = r.other(r.current);
         startTurn(r);
     }
@@ -388,18 +274,8 @@ public final class Server implements AutoCloseable {
             saved = false;
             LOG.log(Level.SEVERE, "Không lưu được kết quả trận " + r.id, ex);
         }
-        both(
-                r,
-                Message.of(
-                        "MATCH_END",
-                        "match",
-                        "" + r.id,
-                        "winner",
-                        winner.user.username(),
-                        "reason",
-                        reason));
-        if (!saved)
-            both(r, Message.of("INFO", "text", "Không lưu được kết quả trận đấu vào MySQL."));
+        both(r, Message.of("MATCH_END", "match", "" + r.id, "winner", winner.user.username(), "reason", reason));
+        if (!saved) both(r, Message.of("INFO", "text", "Không lưu được kết quả trận đấu vào MySQL."));
         for (ClientHandler p : List.of(r.a, r.b)) {
             p.lastMatch = r.id;
             p.lastOpponent = r.other(p).user.username();
@@ -431,18 +307,8 @@ public final class Server implements AutoCloseable {
         List<HashMap<String, String>> rows = new ArrayList<>();
         for (var c : online.values())
             if (!c.closed.get())
-                rows.add(
-                        Message.of(
-                                        "",
-                                        "username",
-                                        c.user.username(),
-                                        "displayName",
-                                        c.user.displayName(),
-                                        "wins",
-                                        wins.getOrDefault(c.user.username(), "0"),
-                                        "state",
-                                        c.room == null ? "Rảnh" : "Đang chơi")
-                                .data());
+                rows.add(Message.of("", "username", c.user.username(), "displayName", c.user.displayName(), "wins",
+                    wins.getOrDefault(c.user.username(), "0"), "state", c.room == null ? "Rảnh" : "Đang chơi").data());
         rows.sort(Comparator.comparing(r -> r.get("username")));
         Message m = Message.rows("USERS", rows);
         for (var c : new ArrayList<>(online.values())) c.send(m);
@@ -481,8 +347,7 @@ public final class Server implements AutoCloseable {
         if (closing) return;
         try {
             for (var r : new ArrayList<>(rooms.values()))
-                if (!r.ended && r.current != null && System.nanoTime() >= r.deadlineNanos)
-                    timeout(r);
+                if (!r.ended && r.current != null && System.nanoTime() >= r.deadlineNanos) timeout(r);
             for (var i : new ArrayList<>(invitations.values()))
                 if (System.nanoTime() >= i.expires) cancelInvitations(i.from);
         } catch (Exception ex) {
@@ -495,15 +360,11 @@ public final class Server implements AutoCloseable {
     }
 
     private static void validateName(String name) {
-        require(
-                name.matches("[A-Za-z0-9_]{3,32}"),
-                "Tên tài khoản gồm 3–32 chữ, số hoặc dấu gạch dưới.");
+        require(name.matches("[A-Za-z0-9_]{3,32}"), "Tên tài khoản gồm 3–32 chữ, số hoặc dấu gạch dưới.");
     }
 
     private static void validatePassword(String password) {
-        require(
-                password.length() >= 6 && password.length() <= 128,
-                "Mật khẩu dài từ 6 đến 128 ký tự.");
+        require(password.length() >= 6 && password.length() <= 128, "Mật khẩu dài từ 6 đến 128 ký tự.");
     }
 
     public synchronized void close() {
@@ -523,13 +384,9 @@ public final class Server implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        Server server =
-                new Server(
-                        new DatabaseManager(),
-                        Integer.parseInt(ServerConfig.load().getProperty("server.port", "12345")),
-                        30000);
+        Server server = new Server(new DatabaseManager(), Integer.parseInt(ServerConfig.load().getProperty("server.port", "12345")), 30000);
         Runtime.getRuntime().addShutdownHook(new Thread(server::close));
-        System.out.println("NumberGuessingClient2 — máy chủ TCP, cổng " + server.port());
+        System.out.println("NumberGuessingServer — máy chủ TCP, cổng " + server.port());
         try {
             server.listen();
         } catch (java.net.SocketException ex) {

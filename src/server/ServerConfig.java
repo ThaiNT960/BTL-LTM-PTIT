@@ -10,10 +10,7 @@ final class ServerConfig {
         Properties settings = new Properties();
         Path file = Path.of("config/server.properties");
         if (!Files.isRegularFile(file))
-            throw new IllegalStateException(
-                    "Thiếu "
-                            + file
-                            + ". Kiểm tra tệp cấu hình MySQL trong thư mục config.");
+            throw new IllegalStateException("Thiếu " + file + ". Kiểm tra tệp cấu hình MySQL trong thư mục config.");
         try (InputStream input = Files.newInputStream(file)) {
             settings.load(input);
         }

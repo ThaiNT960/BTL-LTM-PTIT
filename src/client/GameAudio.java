@@ -13,28 +13,8 @@ import java.util.Set;
 
 // Nhạc nền và hiệu ứng âm thanh dùng chung trạng thái bật/tắt âm thanh.
 final class GameAudio {
-    private static final Map<String, Double> LEVELS =
-            Map.of(
-                    "click",
-                    .68,
-                    "key",
-                    .30,
-                    "guess",
-                    .56,
-                    "invite",
-                    .40,
-                    "hint",
-                    .34,
-                    "turn",
-                    .35,
-                    "warning",
-                    .36,
-                    "countdown",
-                    .25,
-                    "win",
-                    .62,
-                    "lose",
-                    .58);
+    private static final Map<String, Double> LEVELS = Map.of("click", .68, "key", .30, "guess", .56, "invite", .40, "hint", .34, "turn",
+        .35, "warning", .36, "countdown", .25, "win", .62, "lose", .58);
     private final Map<String, AudioClip> clips = new HashMap<>();
     private final Map<String, Long> lastPlayed = new HashMap<>();
     private final Set<String> unavailable = new HashSet<>();
@@ -84,8 +64,7 @@ final class GameAudio {
                 music = new MediaPlayer(new Media(resource.toExternalForm()));
                 music.setCycleCount(MediaPlayer.INDEFINITE);
                 music.setVolume(.12);
-                music.setOnError(
-                        () -> System.err.println("Không phát được nhạc nền: " + music.getError()));
+                music.setOnError(() -> System.err.println("Không phát được nhạc nền: " + music.getError()));
             }
             if (!muted) music.play();
         } catch (RuntimeException ex) {
@@ -100,7 +79,8 @@ final class GameAudio {
             stop();
             resetMusicVolume();
             if (music != null) music.pause();
-        } else if (!resultCue && music != null) music.play();
+        } else if (!resultCue && music != null)
+            music.play();
     }
 
     private void duckMusic() {

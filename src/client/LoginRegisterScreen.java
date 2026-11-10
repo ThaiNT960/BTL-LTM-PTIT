@@ -9,15 +9,12 @@ final class LoginRegisterScreen {
     final Label error;
     Button submit;
 
-    LoginRegisterScreen(ClientApp client, ScreenLayout root, boolean registering, String notice,
-               String accountName, Button soundButton) {
+    LoginRegisterScreen(ClientApp client, ScreenLayout root, boolean registering, String notice, String accountName, Button soundButton) {
         root.art("background.png", 0, 0, 1100, 620);
         root.put(soundButton, 1032, 16, 48, 48);
         root.art("dau-so-logo.png", 390, 8, 320, 116);
         root.art("auth-panel.png", 340, 136, 420, 460);
-        root.art(
-                registering ? "auth-title-register.png" : "auth-title-login.png",
-                425, 140, 250, 63);
+        root.art(registering ? "auth-title-register.png" : "auth-title-login.png", 425, 140, 250, 63);
         TextField name = new TextField(registering ? "" : accountName);
         name.setPromptText("Tên tài khoản");
         name.setId("auth-name");
@@ -39,41 +36,28 @@ final class LoginRegisterScreen {
         error = client.label(notice, "screen-error");
         error.setWrapText(true);
         root.put(error, 390, registering ? 439 : 405, 320, 34);
-        submit =
-                client.button(
-                        registering ? "ĐĂNG KÝ" : "ĐĂNG NHẬP",
-                        () -> {
-                            if (name.getText().isBlank() || pass.getText().isBlank()) {
-                                error.setText("Vui lòng nhập tên tài khoản và mật khẩu.");
-                                return;
-                            }
-                            if (registering && !pass.getText().equals(confirm.getText())) {
-                                error.setText("Mật khẩu xác nhận chưa khớp.");
-                                return;
-                            }
-                            error.setText("");
-                            submit.setDisable(true);
-                            client.sendAuth(registering, name.getText().trim(), pass.getText());
-                        });
+        submit = client.button(registering ? "ĐĂNG KÝ" : "ĐĂNG NHẬP", () -> {
+            if (name.getText().isBlank() || pass.getText().isBlank()) {
+                error.setText("Vui lòng nhập tên tài khoản và mật khẩu.");
+                return;
+            }
+            if (registering && !pass.getText().equals(confirm.getText())) {
+                error.setText("Mật khẩu xác nhận chưa khớp.");
+                return;
+            }
+            error.setText("");
+            submit.setDisable(true);
+            client.sendAuth(registering, name.getText().trim(), pass.getText());
+        });
         submit.setId("auth-submit");
         submit.setDefaultButton(true);
-        root.imageButton(
-                submit,
-                registering ? "submit-register.png" : "submit-login.png",
-                440,
-                registering ? 468 : 456,
-                220,
-                56);
-        Hyperlink link =
-                new Hyperlink(
-                        registering ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký");
+        root.imageButton(submit, registering ? "submit-register.png" : "submit-login.png", 440, registering ? 468 : 456, 220, 56);
+        Hyperlink link = new Hyperlink(registering ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký");
         link.setId("auth-switch");
         link.setAlignment(Pos.CENTER);
         link.setOnAction(e -> client.auth(!registering, ""));
         root.put(link, 395, registering ? 525 : 515, 310, 28);
-        root.imageButton(
-                client.button("Đóng", client::dismissModal),
-                "close-button.png", 676, 195, 32, 32);
+        root.imageButton(client.button("Đóng", client::dismissModal), "close-button.png", 676, 195, 32, 32);
         Platform.runLater(name::requestFocus);
     }
 }

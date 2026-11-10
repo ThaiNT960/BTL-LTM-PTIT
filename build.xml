@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="NumberGuessingClient2" default="jar" basedir=".">
-    <description>Ứng dụng đấu số đối kháng: một project NetBeans Ant, hai bản đóng gói.</description>
+<project name="NumberGuessing" default="jar" basedir=".">
     <import file="nbproject/build-impl.xml"/>
 
     <target name="-pre-compile">
@@ -15,7 +14,7 @@
         <mkdir dir="${dist.dir}/server"/>
         <jar destfile="${dist.jar}" basedir="${build.classes.dir}"
              includes="client/**,common/**,assets/**,sound/**,resources/**">
-            <manifest><attribute name="Main-Class" value="client.Launcher"/></manifest>
+            <manifest><attribute name="Main-Class" value="client.ClientApp"/></manifest>
         </jar>
         <jar destfile="${dist.dir}/server/NumberGuessingServer.jar" basedir="${build.classes.dir}"
              includes="server/**,common/**">

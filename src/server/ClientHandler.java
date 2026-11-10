@@ -42,11 +42,8 @@ final class ClientHandler implements Runnable {
             while (!closed.get()) {
                 Object obj = in.readObject();
                 if (!(obj instanceof Message m)) throw new IOException("Thông điệp không hợp lệ");
-                if (m.type() == null
-                        || m.data() == null
-                        || m.rows() == null
-                        || m.data().size() > 20
-                        || !m.rows().isEmpty()) throw new IOException("Dữ liệu thông điệp không hợp lệ");
+                if (m.type() == null || m.data() == null || m.rows() == null || m.data().size() > 20 || !m.rows().isEmpty())
+                    throw new IOException("Dữ liệu thông điệp không hợp lệ");
                 for (var e : m.data().entrySet())
                     if (e.getKey() == null || e.getValue() == null || e.getValue().length() > 4096)
                         throw new IOException("Trường dữ liệu không hợp lệ");

@@ -34,7 +34,8 @@ final class GameRoom {
         } else if (player == b) {
             Server.require(secretB == null, "Đã chọn số bí mật.");
             secretB = number;
-        } else throw new IllegalArgumentException("Không thuộc trận.");
+        } else
+            throw new IllegalArgumentException("Không thuộc trận.");
     }
 
     boolean ready() {
@@ -53,9 +54,7 @@ final class GameRoom {
 
     void beginTurn(long durationMillis) {
         turn++;
-        deadlineNanos =
-                System.nanoTime()
-                        + java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(durationMillis);
+        deadlineNanos = System.nanoTime() + java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(durationMillis);
     }
 
     private void validateNumber(int number) {
