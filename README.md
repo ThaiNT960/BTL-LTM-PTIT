@@ -37,6 +37,31 @@ Nếu chạy client trên máy khác, thay `server.host` bằng IP của máy ch
 ## 3. Chạy chương trình
 
 Mở project bằng NetBeans, chọn cấu hình **Server** rồi chạy. Giữ server hoạt động, mở hai phiên client bằng cấu hình **Client** (hoặc Run File `client.ClientApp` hai lần). Đăng nhập bằng `user1 / 123456` và `user2 / 123456` để thi đấu. Server sử dụng cổng TCP `12345` theo `config/server.properties`.
+## 4. Hình ảnh giao diện
+### Màn hình chào mừng
+<p align="center">
+  <img width="700" alt="Màn hình chào mừng" src="https://github.com/user-attachments/assets/0b564465-8866-400d-8c96-2af3451dc11a" />
+</p>
+
+### Đăng nhập và đăng ký
+<p align="center">
+  <img width="700" alt="Giao diện đăng nhập và đăng ký" src="https://github.com/user-attachments/assets/642268f2-675e-4dc3-b041-2b3f7e1610e8"/>
+</p>
+
+### Sảnh chờ
+<p align="center">
+  <img width="700" alt="Giao diện sảnh chờ" src="https://github.com/user-attachments/assets/114c2280-c243-4f65-88a2-deb414895603" />
+</p>
+
+### Phòng đấu
+<p align="center">
+  <img width="700" alt="Giao diện phòng đấu" src="https://github.com/user-attachments/assets/d8842cb6-0b6d-43ca-a362-e793fcc35ae8" />
+</p>
+
+### Kết quả trận đấu
+<p align="center">
+  <img width="700" alt="Kết quả trận đấu" src="https://github.com/user-attachments/assets/6432f2b0-f26d-4773-80a1-d671ab7a854b" />
+</p>
 
 ## Nguồn tài nguyên
 
