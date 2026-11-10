@@ -55,12 +55,12 @@ Mở project bằng NetBeans, chọn cấu hình **Server** rồi chạy. Giữ 
 
 ### Phòng đấu
 <p align="center">
-  <img width="700" alt="Giao diện phòng đấu" src="https://github.com/user-attachments/assets/ad73aa74-a9e3-4bca-92e6-cac85ed5f480" />
+  <img width="700" alt="Giao diện phòng đấu" src="https://github.com/user-attachments/assets/4ee2552d-4c87-4ea5-95c6-754f41e348eb" />
 </p>
 
 ### Kết quả trận đấu
 <p align="center">
-  <img width="700" alt="Kết quả trận đấu" src="https://github.com/user-attachments/assets/c61ea461-3d7e-464d-81c8-60d373ef54e8" />
+  <img width="700" alt="Kết quả trận đấu" src="https://github.com/user-attachments/assets/15e85005-93c6-4e88-aad9-a233ea935019" />
 </p>
 
 ## Nguồn tài nguyên
