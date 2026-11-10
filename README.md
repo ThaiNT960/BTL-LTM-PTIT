@@ -1,6 +1,8 @@
 # Game Đấu Số
 
-Game đoán số đối kháng online viết bằng JavaFX, TCP Socket và MySQL.
+Game đoán số đối kháng online viết bằng JavaFX, TCP Socket và MySQL. 
+
+Hai người chơi chọn số bí mật trong phạm vi đã thống nhất, sau đó lần lượt đoán số của đối phương. Sau mỗi lần đoán sai, game gợi ý số cần tìm lớn hơn hay nhỏ hơn. Người đoán đúng trước sẽ thắng.
 
 ## 1. Cấu hình MySQL
 
