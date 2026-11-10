@@ -55,14 +55,16 @@ Mở project bằng NetBeans, chọn cấu hình **Server** rồi chạy. Giữ 
 
 ### Phòng đấu
 <p align="center">
-  <img width="700" alt="Giao diện phòng đấu" src="https://github.com/user-attachments/assets/d8842cb6-0b6d-43ca-a362-e793fcc35ae8" />
+  <img width="700" alt="Giao diện phòng đấu" src="https://github.com/user-attachments/assets/ad73aa74-a9e3-4bca-92e6-cac85ed5f480" />
 </p>
 
 ### Kết quả trận đấu
 <p align="center">
-  <img width="700" alt="Kết quả trận đấu" src="https://github.com/user-attachments/assets/6432f2b0-f26d-4773-80a1-d671ab7a854b" />
+  <img width="700" alt="Kết quả trận đấu" src="https://github.com/user-attachments/assets/c61ea461-3d7e-464d-81c8-60d373ef54e8" />
 </p>
 
 ## Nguồn tài nguyên
 
 Nhạc nền: [TAD](https://opengameart.org/content/once-upon-a-time-loop). Hiệu ứng `click`, `key`, `countdown`: [Kenney](https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks); `guess`: [Brandon Morris](https://opengameart.org/content/completion-sound); `win`, `lose`: [MintoDog](https://opengameart.org/content/cozy-puzzle-jingle-result). Toàn bộ hình ảnh và các hiệu ứng âm thanh còn lại được tạo riêng cho project.
+
+![Visitors](https://komarev.com/ghpvc/?username=ThaiNT9&repo=BTL-LTM-PTIT&color=blue&style=flat-square)
